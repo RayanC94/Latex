@@ -1,0 +1,221 @@
+\section{État de l'Art}
+\label{sec:etat_art}
+
+\subsection{Détection de la Somnolence au Volant}
+
+La détection de la somnolence au volant fait l'objet de recherches intensives depuis plusieurs décennies. Les approches peuvent être classées en trois catégories principales \cite{sahayadhas2012detecting} :
+
+\subsubsection{Approches Comportementales}
+
+Ces méthodes analysent le comportement du conducteur via des caméras :
+
+\begin{itemize}
+    \item \textbf{Analyse faciale :} Détection de la fermeture des yeux, fréquence de clignement, bâillements \cite{ji2004real}
+    \item \textbf{Mouvements de la tête :} Inclinaisons, hochements caractéristiques de l'endormissement \cite{daza2020driver}
+    \item \textbf{PERCLOS :} Pourcentage de fermeture des paupières, considéré comme un indicateur fiable \cite{dinges1998perclos}
+\end{itemize}
+
+\textbf{Avantages :} Non-intrusives, facilement déployables
+
+\textbf{Limitations :} Sensibles aux conditions d'éclairage, port de lunettes, orientation de la tête
+
+\subsubsection{Approches Véhiculaires}
+
+Ces méthodes analysent le comportement du véhicule :
+
+\begin{itemize}
+    \item \textbf{Trajectoire :} Déviations de la trajectoire, franchissements de ligne \cite{friedrichs2010drowsy}
+    \item \textbf{Volant :} Mouvements erratiques, corrections brusques \cite{eskandarian2007research}
+    \item \textbf{Pédales :} Variations dans l'utilisation de l'accélérateur/frein
+\end{itemize}
+
+\textbf{Avantages :} Pas de capteur additionnel nécessaire
+
+\textbf{Limitations :} Détection tardive (après début de somnolence), dépendance aux conditions de conduite
+
+\subsubsection{Approches Physiologiques}
+
+Ces méthodes mesurent directement les signaux physiologiques du conducteur :
+
+\begin{itemize}
+    \item \textbf{EEG :} Activité électrique cérébrale \cite{lin2010eeg}
+    \item \textbf{EOG :} Mouvements oculaires \cite{hu2013driving}
+    \item \textbf{ECG :} Rythme cardiaque, variabilité HRV \cite{vicente2016drowsiness}
+    \item \textbf{Autres :} Température cutanée, respiration, GSR (réponse galvanique)
+\end{itemize}
+
+\textbf{Avantages :} Mesure directe de l'état physiologique, détection précoce
+
+\textbf{Limitations :} Nécessite des capteurs spécifiques, peut être intrusif
+
+\subsection{EEG et EOG pour l'Estimation de Vigilance}
+
+\subsubsection{Électroencéphalographie (EEG)}
+
+L'EEG mesure l'activité électrique du cerveau via des électrodes placées sur le cuir chevelu. Les signaux EEG sont généralement décomposés en bandes de fréquence caractéristiques \cite{niedermeyer2005electroencephalography} :
+
+\begin{table}[H]
+\centering
+\caption{Bandes de fréquence EEG et leur signification}
+\label{tab:eeg_bands}
+\begin{tabular}{lcp{8cm}}
+\toprule
+\textbf{Bande} & \textbf{Fréquence} & \textbf{État Mental Associé} \\
+\midrule
+Delta ($\delta$) & 1-4 Hz & Sommeil profond \\
+Theta ($\theta$) & 4-8 Hz & Somnolence, relaxation profonde \\
+Alpha ($\alpha$) & 8-14 Hz & Relaxation, yeux fermés \\
+Beta ($\beta$) & 14-31 Hz & Éveil, concentration \\
+Gamma ($\gamma$) & 31-50 Hz & Activité cognitive intense \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Évolution lors de la somnolence :}
+
+Plusieurs études ont mis en évidence des modifications caractéristiques de l'EEG lors de la transition vers la somnolence \cite{lal2003driver} :
+
+\begin{itemize}
+    \item \textbf{Augmentation} de l'activité theta (4-8 Hz)
+    \item \textbf{Augmentation} de l'activité alpha (8-14 Hz)
+    \item \textbf{Diminution} de l'activité beta (14-31 Hz)
+    \item \textbf{Ratio $\theta/\beta$} : Indicateur robuste de somnolence \cite{jap2009using}
+\end{itemize}
+
+\subsubsection{Électro-oculographie (EOG)}
+
+L'EOG mesure les mouvements oculaires en détectant les variations de potentiel électrique entre la rétine et la cornée. Les paramètres EOG caractéristiques de la somnolence incluent \cite{hu2013driving} :
+
+\begin{itemize}
+    \item \textbf{Fréquence de clignement :} Diminue avec la fatigue
+    \item \textbf{Durée de fermeture :} Augmente (paupières restent fermées plus longtemps)
+    \item \textbf{Amplitude des saccades :} Diminue
+    \item \textbf{Vitesse des saccades :} Ralentit
+    \item \textbf{Mouvements lents des yeux :} Apparaissent (Slow Eye Movements, SEM)
+\end{itemize}
+
+\subsection{Features pour l'Estimation de Vigilance}
+
+\subsubsection{Entropie Différentielle (Differential Entropy)}
+
+L'entropie différentielle (DE) est une mesure de la complexité d'un signal continu, introduite par Duan et al. \cite{duan2013differential} pour l'analyse EEG. Pour un signal gaussien $X \sim \mathcal{N}(\mu, \sigma^2)$, le DE est défini par :
+
+\begin{equation}
+h(X) = \frac{1}{2}\log(2\pi e\sigma^2)
+\label{eq:de}
+\end{equation}
+
+Le DE présente plusieurs avantages pour l'analyse EEG \cite{shi2013differential} :
+
+\begin{itemize}
+    \item Plus stable que la puissance spectrale classique
+    \item Moins sensible au bruit
+    \item Corrélation élevée avec l'état émotionnel et la vigilance
+    \item Calcul efficace
+\end{itemize}
+
+\textbf{Calcul du DE :} Pour chaque fenêtre temporelle de signal EEG :
+\begin{enumerate}
+    \item Application d'une transformée de Fourier rapide (FFT)
+    \item Extraction de la puissance spectrale pour chaque bande de fréquence
+    \item Calcul du DE selon l'équation \ref{eq:de}
+\end{enumerate}
+
+\subsubsection{Lissage par Système Dynamique Linéaire (LDS)}
+
+Pour réduire le bruit et améliorer la stabilité temporelle des features DE, les auteurs appliquent un lissage par système dynamique linéaire \cite{zheng2015emotionmeter}. Le modèle LDS est défini par :
+
+\begin{align}
+\mathbf{x}_t &= \mathbf{A}\mathbf{x}_{t-1} + \mathbf{w}_t && \text{(équation d'état)} \\
+\mathbf{y}_t &= \mathbf{C}\mathbf{x}_t + \mathbf{v}_t && \text{(équation d'observation)}
+\end{align}
+
+où $\mathbf{w}_t$ et $\mathbf{v}_t$ sont des bruits gaussiens. L'estimation de l'état latent $\mathbf{x}_t$ est obtenue par le filtre de Kalman.
+
+\subsection{Modèles d'Apprentissage Automatique}
+
+\subsubsection{Support Vector Regression (SVR)}
+
+La régression par vecteurs de support \cite{smola2004tutorial} est une extension des SVM pour les problèmes de régression. L'objectif est de trouver une fonction $f(\mathbf{x})$ qui dévie au maximum de $\epsilon$ de la cible $y$ pour tous les points d'entraînement.
+
+\textbf{Formulation :}
+\begin{equation}
+\min_{\mathbf{w},b,\xi,\xi^*} \frac{1}{2}\|\mathbf{w}\|^2 + C\sum_{i=1}^n(\xi_i + \xi_i^*)
+\end{equation}
+
+sous contraintes :
+\begin{align}
+y_i - (\mathbf{w}^T\phi(\mathbf{x}_i) + b) &\leq \epsilon + \xi_i \\
+(\mathbf{w}^T\phi(\mathbf{x}_i) + b) - y_i &\leq \epsilon + \xi_i^*
+\end{align}
+
+\textbf{Avantages :}
+\begin{itemize}
+    \item Gestion efficace des données de haute dimension
+    \item Robuste au sur-apprentissage grâce à la régularisation
+    \item Flexibilité via les noyaux (linéaire, RBF, polynomial)
+\end{itemize}
+
+\subsubsection{Continuous Conditional Random Field (CCRF)}
+
+Les champs aléatoires conditionnels continus \cite{qiao2009continuous} étendent les CRF discrets aux espaces de sortie continus. Pour une séquence d'observations $\mathbf{X} = (\mathbf{x}_1, \ldots, \mathbf{x}_T)$ et une séquence de sorties continues $\mathbf{y} = (y_1, \ldots, y_T)$, le CCRF modélise :
+
+\begin{equation}
+P(\mathbf{y}|\mathbf{X}) = \frac{1}{Z(\mathbf{X})}\exp\left(\sum_{t=1}^T\Phi(y_t,\mathbf{x}_t) + \sum_{t=2}^T\Psi(y_t,y_{t-1})\right)
+\end{equation}
+
+où :
+\begin{itemize}
+    \item $\Phi(y_t,\mathbf{x}_t)$ : potentiel unaire (dépendance observation-sortie)
+    \item $\Psi(y_t,y_{t-1})$ : potentiel d'arête (cohérence temporelle)
+    \item $Z(\mathbf{X})$ : fonction de partition (normalisation)
+\end{itemize}
+
+\textbf{Avantages :}
+\begin{itemize}
+    \item Modélise explicitement les dépendances temporelles
+    \item Encourage la cohérence temporelle des prédictions
+    \item Plus réaliste pour les phénomènes continus comme la vigilance
+\end{itemize}
+
+\subsubsection{Continuous Conditional Neural Field (CCNF)}
+
+Le CCNF \cite{baltrusaitis2013constrained} combine les avantages des réseaux de neurones et des CRF :
+
+\begin{equation}
+\Phi(y_t,\mathbf{x}_t) = \sum_{j=1}^J \alpha_j \sigma(\mathbf{w}_j^T\mathbf{x}_t + b_j) \cdot g(y_t - \mu_j)
+\end{equation}
+
+où $\sigma$ est une fonction d'activation (typiquement ReLU) et $g$ est une fonction noyau.
+
+\textbf{Avantages :}
+\begin{itemize}
+    \item Capture des relations non-linéaires complexes
+    \item Pouvoir expressif supérieur au CCRF linéaire
+    \item Apprentissage end-to-end possible
+\end{itemize}
+
+\subsection{Travaux Connexes}
+
+Plusieurs travaux ont exploré l'estimation de vigilance par EEG/EOG :
+
+\begin{itemize}
+    \item \textbf{Lin et al. (2010)} \cite{lin2010eeg} : Utilisation de SVM avec features spectrales EEG, accuracy de 90\% sur classification binaire (éveillé/somnolent).
+    
+    \item \textbf{Hu \& Zheng (2009)} \cite{hu2009detection} : Fusion EEG/EOG avec HMM, amélioration de 15\% par rapport à EEG seul.
+    
+    \item \textbf{Ko et al. (2015)} \cite{ko2015online} : Système temps-réel avec CNN sur spectrogrammes EEG.
+    
+    \item \textbf{Lawhern et al. (2018)} \cite{lawhern2018eegnet} : EEGNet, architecture CNN compacte pour BCI, applicable à la vigilance.
+\end{itemize}
+
+\textbf{Positionnement de l'article de Zheng \& Lu :}
+
+L'originalité de leur approche réside dans :
+\begin{enumerate}
+    \item L'estimation \textbf{continue} (et non binaire) de la vigilance
+    \item L'utilisation du \textbf{PERCLOS} comme variable cible (mesure objective)
+    \item La modélisation explicite de la \textbf{cohérence temporelle} (CCRF/CCNF)
+    \item Un dataset \textbf{écologique} (conduite simulée réaliste)
+    \item Une validation sur \textbf{23 sujets} avec protocole rigoureux
+\end{enumerate}

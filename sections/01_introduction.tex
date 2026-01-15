@@ -1,0 +1,84 @@
+\section{Introduction}
+\label{sec:introduction}
+
+\subsection{Contexte et Motivation}
+
+La somnolence au volant constitue un problème majeur de sécurité routière à l'échelle mondiale. Selon l'Organisation Mondiale de la Santé (OMS), la fatigue au volant est impliquée dans 20 à 30\% des accidents de la route mortels \cite{who2015}. En France, la Sécurité Routière estime que la somnolence est responsable d'environ un accident mortel sur trois sur autoroute \cite{securite_routiere2020}.
+
+La détection automatique et précoce de la somnolence représente donc un enjeu crucial pour la prévention des accidents. Les approches traditionnelles basées sur l'analyse vidéo du conducteur (fermeture des paupières, mouvements de la tête) peuvent être sujettes à des limitations en conditions de faible luminosité ou lorsque le conducteur porte des lunettes de soleil. 
+
+Les signaux physiologiques, et en particulier l'électroencéphalographie (EEG) et l'électro-oculographie (EOG), offrent une alternative prometteuse en permettant une mesure directe de l'état de vigilance du cerveau. L'EEG capte l'activité électrique cérébrale, tandis que l'EOG mesure les mouvements oculaires et les clignements des paupières. Ces signaux présentent des modifications caractéristiques lors de la transition vers un état de somnolence :
+
+\begin{itemize}
+    \item \textbf{EEG :} Augmentation des ondes lentes (theta : 4-8 Hz) et diminution des ondes rapides (beta : 14-31 Hz)
+    \item \textbf{EOG :} Réduction de la fréquence des clignements, augmentation de leur durée, diminution des saccades oculaires
+\end{itemize}
+
+\subsection{Article de Référence}
+
+Ce projet s'inscrit dans le cadre de la reproduction de l'article scientifique de Zheng \& Lu publié en 2017 dans \textit{Journal of Neural Engineering} \cite{zheng2017vigilance}. Les auteurs proposent une approche novatrice d'estimation continue de la vigilance en combinant :
+
+\begin{enumerate}
+    \item Des features EEG basées sur l'entropie différentielle (Differential Entropy, DE)
+    \item Des features EOG décrivant les mouvements oculaires
+    \item Trois modèles d'apprentissage automatique : SVR, CCRF et CCNF
+    \item Le dataset SEED-VIG contenant 23 sujets en situation de conduite simulée
+\end{enumerate}
+
+L'originalité de leur approche réside dans l'utilisation de modèles temporels (CCRF et CCNF) qui prennent en compte la cohérence temporelle de l'évolution de la vigilance, contrairement aux approches classiques qui traitent chaque instant indépendamment.
+
+\subsection{Objectifs du Projet}
+
+Les objectifs de ce projet sont multiples :
+
+\begin{enumerate}
+    \item \textbf{Reproductibilité Scientifique :} Vérifier la reproductibilité des résultats de l'article original en implémentant de manière indépendante les méthodes décrites.
+    
+    \item \textbf{Implémentation Complète :} Développer un pipeline complet d'estimation de vigilance incluant :
+    \begin{itemize}
+        \item Chargement et préparation des données SEED-VIG
+        \item Implémentation des trois modèles (SVR, CCRF, CCNF)
+        \item Validation croisée rigoureuse sur 23 sujets
+        \item Évaluation avec les métriques standard (COR, RMSE)
+    \end{itemize}
+    
+    \item \textbf{Analyse Comparative :} Comparer les performances des différents modèles et analyser leurs forces et faiblesses respectives.
+    
+    \item \textbf{Validation Expérimentale :} Évaluer la robustesse de l'approche sur une population diversifiée et identifier les facteurs influençant les performances.
+    
+    \item \textbf{Documentation :} Produire une documentation technique complète facilitant la réutilisation et l'extension du code.
+\end{enumerate}
+
+\subsection{Contributions}
+
+Les contributions principales de ce projet sont :
+
+\begin{itemize}
+    \item \textbf{Implémentation Open-Source :} Code complet et modulaire en Python, utilisant des bibliothèques standards (scikit-learn, NumPy, SciPy) pour faciliter la reproductibilité.
+    
+    \item \textbf{Validation sur 23 Sujets :} Évaluation exhaustive sur l'ensemble du dataset SEED-VIG avec validation croisée 5-fold, assurant la robustesse des résultats.
+    
+    \item \textbf{Analyse Détaillée :} Étude approfondie des performances par sujet, identification des cas difficiles et analyse de la variabilité inter-individuelle.
+    
+    \item \textbf{Visualisations Professionnelles :} Création de graphiques de qualité publication illustrant les résultats de manière claire et informative.
+    
+    \item \textbf{Discussion Critique :} Analyse transparente des limitations de notre implémentation par rapport à l'article original, avec des pistes d'amélioration concrètes.
+\end{itemize}
+
+\subsection{Organisation du Rapport}
+
+Ce rapport est organisé comme suit :
+
+\begin{description}
+    \item[Section \ref{sec:etat_art}] présente un état de l'art sur la détection de somnolence et les méthodes basées sur l'EEG/EOG.
+    
+    \item[Section \ref{sec:methodologie}] détaille la méthodologie employée : description du dataset SEED-VIG, extraction des features, et présentation théorique des trois modèles.
+    
+    \item[Section \ref{sec:implementation}] décrit notre implémentation technique : architecture logicielle, choix de conception et protocole expérimental.
+    
+    \item[Section \ref{sec:resultats}] présente les résultats obtenus avec des tableaux comparatifs et des visualisations détaillées.
+    
+    \item[Section \ref{sec:discussion}] propose une discussion critique des résultats, une comparaison avec l'article original et une analyse des limitations.
+    
+    \item[Section \ref{sec:conclusion}] conclut ce rapport et propose des perspectives d'amélioration et d'extension du travail.
+\end{description}

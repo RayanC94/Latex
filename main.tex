@@ -1,0 +1,237 @@
+\documentclass[12pt,a4paper]{article}
+
+% ============================================================
+% PACKAGES
+% ============================================================
+
+% Langue et encodage
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+
+% Mathématiques
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+
+% Graphiques et figures
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+% Tableaux
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{longtable}
+
+% Mise en page
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{setspace}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+
+% Couleurs et liens
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{url}
+
+% Code source
+\usepackage{listings}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+% Bibliographie
+\usepackage[backend=biber,style=ieee,sorting=none]{biblatex}
+\addbibresource{references.bib}
+
+% Autres
+\usepackage{enumitem}
+\usepackage{csquotes}
+
+% ============================================================
+% CONFIGURATION
+% ============================================================
+
+% En-têtes et pieds de page
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\leftmark}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% Style de code
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{pythonstyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    language=Python
+}
+
+\lstset{style=pythonstyle}
+
+% Hyperlinks
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    citecolor=blue,
+    pdftitle={Estimation de Vigilance par EEG et EOG},
+    pdfauthor={Votre Nom},
+}
+
+% Numérotation des sections
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+% ============================================================
+% MÉTADONNÉES
+% ============================================================
+
+\title{%
+    \textbf{Estimation de la Vigilance d'un Conducteur} \\
+    \Large{Reproduction de l'Article Scientifique} \\
+    \Large{\textit{``Identifying Stable Patterns over Time for Emotion Recognition from EEG''}} \\
+    \vspace{0.5cm}
+    \large{Zheng \& Lu (2017)}
+}
+
+\author{
+    Rayan Yousfi \\
+    \textit{Master Intelligence Artificielle} \\
+    \textit{Université/École} \\
+    \texttt{rayan.yousfi@example.com}
+}
+
+\date{\today}
+
+% ============================================================
+% DÉBUT DU DOCUMENT
+% ============================================================
+
+\begin{document}
+
+% Page de titre
+\maketitle
+\thispagestyle{empty}
+
+% Résumé
+\begin{abstract}
+\noindent
+La somnolence au volant est responsable de 20 à 30\% des accidents mortels de la route selon l'Organisation Mondiale de la Santé. Ce projet présente une reproduction de l'article scientifique de Zheng \& Lu (2017) sur l'estimation de la vigilance d'un conducteur à partir de signaux électroencéphalographiques (EEG) et électro-oculographiques (EOG). 
+
+Nous avons implémenté et comparé trois modèles d'apprentissage automatique : Support Vector Regression (SVR), Continuous Conditional Random Field (CCRF) et Continuous Conditional Neural Field (CCNF), sur le dataset SEED-VIG contenant des enregistrements de 23 sujets effectuant une tâche de conduite simulée. 
+
+Nos résultats montrent une reproduction fidèle des performances de l'article original, avec un coefficient de corrélation (COR) de 0.803 pour le modèle CCNF (94.5\% de la performance de l'article), validant ainsi l'approche de détection automatique de la somnolence basée sur les signaux cérébraux et oculaires. Cependant, notre erreur quadratique moyenne (RMSE) de 0.192 reste environ deux fois supérieure à celle de l'article (0.09), ce qui s'explique par notre implémentation simplifiée des modèles temporels.
+
+\textbf{Mots-clés :} Vigilance, EEG, EOG, Machine Learning, Détection de Somnolence, SVR, CCRF, CCNF, Differential Entropy, PERCLOS
+\end{abstract}
+
+\newpage
+
+% Table des matières
+\tableofcontents
+\newpage
+
+% Liste des figures
+\listoffigures
+\newpage
+
+% Liste des tableaux
+\listoftables
+\newpage
+
+% ============================================================
+% CONTENU DU RAPPORT
+% ============================================================
+
+\onehalfspacing % Interligne 1.5
+
+\input{sections/01_introduction}
+\input{sections/02_etat_de_lart}
+\input{sections/03_methodologie}
+\input{sections/04_implementation}
+\input{sections/05_resultats}
+\input{sections/06_discussion}
+\input{sections/07_conclusion}
+
+% ============================================================
+% BIBLIOGRAPHIE
+% ============================================================
+
+\newpage
+\printbibliography[heading=bibintoc,title={Références}]
+
+% ============================================================
+% ANNEXES
+% ============================================================
+
+\newpage
+\appendix
+
+\section{Code Source Principal}
+\label{app:code}
+
+\subsection{Chargeur de Données}
+\lstinputlisting[caption={data\_loader.py},label={lst:dataloader}]{../src/data_loader.py}
+
+\subsection{Modèles}
+\lstinputlisting[caption={models.py},label={lst:models}]{../src/models.py}
+
+\section{Résultats Détaillés par Sujet}
+\label{app:results}
+
+\input{tables/table3_subjects_detailed.tex}
+
+\section{Configurations Expérimentales}
+\label{app:config}
+
+\begin{table}[H]
+\centering
+\caption{Hyperparamètres des modèles}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Modèle} & \textbf{Paramètre} & \textbf{Valeur} \\
+\midrule
+SVR & $C$ & 10.0 \\
+    & $\gamma$ & 0.1 \\
+    & kernel & RBF \\
+    & $\epsilon$ & 0.1 \\
+\midrule
+CCRF & $C$ & 10.0 \\
+     & $\gamma$ & 0.1 \\
+     & $\alpha$ & 1.0 \\
+     & $\beta$ & 0.1 \\
+     & window & 7 \\
+\midrule
+CCNF & $C$ & 10.0 \\
+     & $\gamma$ & 0.1 \\
+     & $\alpha$ & 1.0 \\
+     & $\beta$ & 0.1 \\
+     & neurons & 20 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\end{document}

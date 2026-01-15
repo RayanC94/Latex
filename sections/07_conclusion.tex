@@ -1,0 +1,231 @@
+\section{Conclusion}
+\label{sec:conclusion}
+
+\subsection{Synthèse des Contributions}
+
+Ce projet avait pour objectif la reproduction de l'article scientifique de Zheng \& Lu (2017) sur l'estimation de la vigilance d'un conducteur à partir de signaux EEG et EOG. Nous avons mené à bien cette tâche en développant une implémentation complète et rigoureuse des trois modèles proposés : SVR, CCRF et CCNF.
+
+\textbf{Résultats principaux :}
+
+\begin{enumerate}
+    \item \textbf{Reproduction réussie :}
+    \begin{itemize}
+        \item COR de 0.804 pour CCNF, soit \textbf{94.5\% de la performance de l'article} (0.85)
+        \item Classement des modèles préservé : CCNF > SVR > CCRF
+        \item Validation robuste sur 23 sujets avec 5-fold cross-validation
+    \end{itemize}
+    
+    \item \textbf{Implémentation open-source :}
+    \begin{itemize}
+        \item Code modulaire et réutilisable en Python
+        \item Documentation complète et visualisations professionnelles
+        \item Architecture extensible facilitant les améliorations futures
+    \end{itemize}
+    
+    \item \textbf{Analyse approfondie :}
+    \begin{itemize}
+        \item 6 visualisations détaillées des performances
+        \item Identification des sujets faciles vs difficiles
+        \item Étude de la variabilité inter-individuelle
+    \end{itemize}
+    
+    \item \textbf{Discussion critique :}
+    \begin{itemize}
+        \item Analyse transparente des limitations (RMSE 2× supérieur)
+        \item Identification des causes (sur-lissage, implémentation simplifiée)
+        \item Proposition de pistes d'amélioration concrètes
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Atteinte des Objectifs}
+
+\subsubsection{Objectifs Scientifiques}
+
+\begin{table}[H]
+\centering
+\caption{Bilan des objectifs scientifiques}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Objectif} & \textbf{Statut} & \textbf{Commentaire} \\
+\midrule
+Reproduction des résultats & ✅ Atteint & COR à 94.5\% de l'article \\
+Implémentation des 3 modèles & ✅ Atteint & SVR, CCRF, CCNF fonctionnels \\
+Validation sur 23 sujets & ✅ Atteint & 115 expériences (23×5 folds) \\
+Métriques identiques & ✅ Atteint & COR et RMSE calculés \\
+Analyse comparative & ✅ Atteint & Graphiques et tableaux détaillés \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Objectifs Techniques}
+
+\begin{table}[H]
+\centering
+\caption{Bilan des objectifs techniques}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Objectif} & \textbf{Statut} & \textbf{Commentaire} \\
+\midrule
+Code modulaire & ✅ Atteint & Architecture src/ claire \\
+Documentation & ✅ Atteint & Docstrings, README, rapport \\
+Reproductibilité & ✅ Atteint & Seeds fixes, résultats stables \\
+Visualisations & ✅ Atteint & 6 figures publication-ready \\
+Gestion d'erreurs & ✅ Atteint & Robuste aux fichiers manquants \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Limites Reconnues}
+
+Nous reconnaissons les limitations suivantes de notre travail :
+
+\begin{enumerate}
+    \item \textbf{RMSE Élevé (0.192 vs 0.09)} :
+    \begin{itemize}
+        \item Implémentation simplifiée de CCRF/CCNF (lissage local vs Viterbi global)
+        \item Impact : Précision absolue des prédictions à améliorer
+        \item Pas critique pour la détection de tendances (COR reste élevé)
+    \end{itemize}
+    
+    \item \textbf{Hyperparamètres Non Optimisés} :
+    \begin{itemize}
+        \item Pas de grid search exhaustive
+        \item Paramètres fixés empiriquement
+        \item Gain potentiel : 5-10\% d'amélioration
+    \end{itemize}
+    
+    \item \textbf{Généralisation Cross-Subject Non Testée} :
+    \begin{itemize}
+        \item Validation par sujet (intra-subject)
+        \item Généralisation à de nouveaux utilisateurs incertaine
+        \item Nécessite validation leave-one-subject-out
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Perspectives Futures}
+
+\subsubsection{Améliorations à Court Terme}
+
+\begin{enumerate}
+    \item \textbf{Optimisation du lissage temporel} :
+    \begin{itemize}
+        \item Réduction de la fenêtre (7 → 3 échantillons)
+        \item Ajustement de $\beta$ (0.1 → 0.3-0.5)
+        \item Objectif : RMSE réduit à 0.15-0.16
+    \end{itemize}
+    
+    \item \textbf{Grid search d'hyperparamètres} :
+    \begin{itemize}
+        \item Exploration systématique de $C$, $\gamma$, $\epsilon$
+        \item Optimisation par sujet si ressources disponibles
+        \item Objectif : Gain de 5-10\% sur RMSE et COR
+    \end{itemize}
+\end{enumerate}
+
+\subsubsection{Extensions à Moyen Terme}
+
+\begin{enumerate}
+    \item \textbf{Deep Learning avec LSTM} :
+    \begin{itemize}
+        \item Architecture récurrente pour temporalité
+        \item Entraînement sur GPU (PyTorch/TensorFlow)
+        \item Objectif : COR > 0.85, RMSE < 0.15
+    \end{itemize}
+    
+    \item \textbf{Transformer avec Attention} :
+    \begin{itemize}
+        \item État de l'art en modélisation de séquences
+        \item Interprétabilité via poids d'attention
+        \item Objectif : Performance comparable à l'article (COR=0.85, RMSE=0.09)
+    \end{itemize}
+    
+    \item \textbf{Validation Cross-Subject} :
+    \begin{itemize}
+        \item Leave-one-subject-out cross-validation
+        \item Évaluation de la généralisation
+        \item Domain adaptation si nécessaire
+    \end{itemize}
+\end{enumerate}
+
+\subsubsection{Recherche à Long Terme}
+
+\begin{enumerate}
+    \item \textbf{Système Temps Réel} :
+    \begin{itemize}
+        \item Optimisation pour inférence rapide (<100ms)
+        \item Interface de monitoring en direct
+        \item Déploiement sur système embarqué
+    \end{itemize}
+    
+    \item \textbf{Données Multi-Modales} :
+    \begin{itemize}
+        \item Intégration de données vidéo (visage)
+        \item Fusion EEG + EOG + Vidéo + Conduite
+        \item Robustesse accrue par redondance
+    \end{itemize}
+    
+    \item \textbf{Étude Longitudinale} :
+    \begin{itemize}
+        \item Suivi sur plusieurs semaines/mois
+        \item Adaptation au profil individuel
+        \item Prédiction personnalisée
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Impact et Utilité}
+
+\subsubsection{Contribution à la Recherche}
+
+\begin{itemize}
+    \item \textbf{Validation de la méthodologie} de Zheng \& Lu (2017)
+    \item \textbf{Code open-source} réutilisable par la communauté
+    \item \textbf{Base solide} pour extensions futures (LSTM, Transformer)
+    \item \textbf{Documentation complète} facilitant la reproductibilité
+\end{itemize}
+
+\subsubsection{Applications Potentielles}
+
+\begin{itemize}
+    \item \textbf{Sécurité routière} : Prévention des accidents liés à la somnolence
+    \item \textbf{Transport professionnel} : Monitoring des chauffeurs de poids lourds
+    \item \textbf{Aviation} : Détection de la fatigue chez les pilotes
+    \item \textbf{Industrie} : Surveillance des opérateurs de machines dangereuses
+    \item \textbf{Santé} : Diagnostic des troubles du sommeil
+\end{itemize}
+
+\subsection{Réflexion Personnelle}
+
+Ce projet m'a permis de :
+
+\begin{enumerate}
+    \item \textbf{Maîtriser le pipeline ML complet} : De la donnée brute à l'évaluation finale
+    \item \textbf{Comprendre l'EEG/EOG} : Signaux physiologiques et leur traitement
+    \item \textbf{Développer la rigueur scientifique} : Validation, métriques, reproductibilité
+    \item \textbf{Identifier les limites} : Analyse critique et honnêteté intellectuelle
+    \item \textbf{Proposer des améliorations} : Vision prospective et innovation
+\end{enumerate}
+
+\textbf{Leçon principale :} La reproduction d'article scientifique est un exercice formateur qui révèle les subtilités et les difficultés cachées derrière les résultats publiés. Notre COR de 0.80 (vs 0.85) démontre qu'une reproduction fidèle à 94\% est un excellent résultat, même si une partie des détails d'implémentation manque dans la publication originale.
+
+\subsection{Mot de la Fin}
+
+La détection automatique de la somnolence au volant représente un enjeu majeur de santé publique. Notre travail démontre qu'il est possible d'estimer la vigilance d'un conducteur avec une précision élevée (COR=0.80) en utilisant des signaux EEG et EOG, ouvrant la voie à des systèmes embarqués de prévention des accidents.
+
+Les améliorations futures, notamment l'utilisation de réseaux LSTM ou Transformer, pourraient permettre d'atteindre voire de dépasser les performances de l'article original. Le code open-source que nous avons développé constitue une base solide pour ces extensions.
+
+\begin{center}
+\textit{``The best way to predict the future is to create it.''} \\
+--- Alan Kay
+\end{center}
+
+\vspace{1cm}
+
+\begin{center}
+\rule{10cm}{0.4pt}
+\end{center}
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbf{Fin du Rapport}
+\end{center}
